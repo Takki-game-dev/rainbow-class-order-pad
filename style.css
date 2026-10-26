@@ -1,0 +1,113 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f1f2f6;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 550px;
+}
+
+h1 {
+    text-align: center;
+    color: #2f3542;
+    margin-bottom: 25px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 15px 10px;
+    text-align: left;
+    border-bottom: 1px solid #ced6e0;
+}
+
+th {
+    background-color: #f1f2f6;
+    color: #57606f;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quantity-control button {
+    background-color: #74b9ff;
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 25%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.quantity-control button:hover {
+    background-color: #0984e3;
+}
+
+.quantity {
+    font-size: 16px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+.subtotal {
+    font-weight: bold;
+}
+
+.total-area {
+    text-align: right;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.reset-area {
+    text-align: right;
+    font-size: 20px;
+    font-weight: bold;
+    border-top: 2px solid #2f3542;
+    padding-top: 15px;
+    margin-top: 10px;
+}
+
+.reset-btn {
+    background-color: #1eb600;
+    color: white;
+    border: none;
+    width: 120px;
+    height: 50px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.reset-btn:hover {
+    background-color: #199600;
+}
+
+#total-price {
+    font-size: 42px;
+    color: #ff4757;
+    margin-left: 10px;
+}

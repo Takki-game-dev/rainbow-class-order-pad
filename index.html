@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>みんなにっこり😊にじいろ屋<注文票></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>注文票</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>値段</th>
+                    <th>個数</th>
+                    <th>金額</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="item-row" date-price="100">
+                    <td>雑巾</td>
+                    <td>100円</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="minus-btn">－</button>
+                            <span class="quantity">0</span>
+                            <button class="plus-btn">＋</button>
+                        </div>
+                    </td>
+                    <td><span class="subtotal">0</span>円</td>
+                </tr>
+
+                <tr class="item-row" date-price="200">
+                    <td>ミサンガ</td>
+                    <td>200円</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="minus-btn">－</button>
+                            <span class="quantity">0</span>
+                            <button class="plus-btn">＋</button>
+                        </div>
+                    </td>
+                    <td><span class="subtotal">0</span>円</td>
+                </tr>
+
+                <tr class="item-row" date-price="300">
+                    <td>コースター</td>
+                    <td>300円</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="minus-btn">－</button>
+                            <span class="quantity">0</span>
+                            <button class="plus-btn">＋</button>
+                        </div>
+                    </td>
+                    <td><span class="subtotal">0</span>円</td>
+                </tr>
+
+                <tr class="item-row" date-price="30">
+                    <td>箸置き バラ</td>
+                    <td>30円</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="minus-btn">－</button>
+                            <span class="quantity">0</span>
+                            <button class="plus-btn">＋</button>
+                        </div>
+                    </td>
+                    <td><span class="subtotal">0</span>円</td>
+                </tr>
+
+                <tr class="item-row" date-price="100">
+                    <td>箸置き セット</td>
+                    <td>100円</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="minus-btn">－</button>
+                            <span class="quantity">0</span>
+                            <button class="plus-btn">＋</button>
+                        </div>
+                    </td>
+                    <td><span class="subtotal">0</span>円</td>
+                </tr>
+
+                <tr class="item-row" date-price="100">
+                    <td>箱</td>
+                    <td>100円</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="minus-btn">－</button>
+                            <span class="quantity">0</span>
+                            <button class="plus-btn">＋</button>
+                        </div>
+                    </td>
+                    <td><span class="subtotal">0</span>円</td>
+                </tr>
+
+                <tr class="item-row" date-price="100">
+                    <td>ラディッシュ</td>
+                    <td>100円</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="minus-btn">－</button>
+                            <span class="quantity">0</span>
+                            <button class="plus-btn">＋</button>
+                        </div>
+                    </td>
+                    <td><span class="subtotal">0</span>円</td>
+                </tr>
+
+                <tr class="item-row" date-price="150">
+                    <td>銀杏</td>
+                    <td>150円</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="minus-btn">－</button>
+                            <span class="quantity">0</span>
+                            <button class="plus-btn">＋</button>
+                        </div>
+                    </td>
+                    <td><span class="subtotal">0</span>円</td>
+                </tr>
+
+                <tr class="item-row" date-price="100">
+                    <td>さつまいも</td>
+                    <td>100円</td>
+                    <td>
+                        <div class="quantity-control">
+                            <button class="minus-btn">－</button>
+                            <span class="quantity">0</span>
+                            <button class="plus-btn">＋</button>
+                        </div>
+                    </td>
+                    <td><span class="subtotal">0</span>円</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="reset-area">
+            <button class="reset-btn">リセット</button>
+        </div>
+
+        <div class="total-area">
+            <span>合計金額:</span>
+            <span id="total-price">0</span> 円
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
