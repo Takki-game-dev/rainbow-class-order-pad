@@ -209,7 +209,6 @@ th {
 .reset-btn { 
     background-color: #747d8c; 
     color: white; 
-    margin-top: 20px;
 }
 .reset-btn:hover { background-color: #57606f; }
 
