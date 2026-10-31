@@ -128,7 +128,7 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     width: 100%;
     max-width: 550px;
-    padding-bottom: 110px !important; 
+    padding-bottom: 180px !important; 
 }
 
 h1 {
@@ -237,6 +237,29 @@ th {
     width: 18px;
     height: 18px;
     cursor: pointer;
+}
+
+/* ★追加：選択中の商品エリアの見た目 */
+.selected-items-container {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dfe4ea;
+}
+.selected-items-container h2 {
+    font-size: 16px;
+    color: #57606f;
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #74b9ff;
+    padding-bottom: 5px;
+}
+.selected-item-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    color: #2f3542;
 }
 
 .total-area {

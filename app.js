@@ -22,11 +22,13 @@ let products = JSON.parse(localStorage.getItem('rainbow_products')) || defaultPr
 
 const tableBody = document.getElementById('product-list-body');
 const totalPriceResult = document.getElementById('total-price');
+const selectedItemsList = document.getElementById('selected-items-list'); // ★取得を追加
 
 const itemCounts = {};
 let isEditMode = false;
-let isDeleteMode = false; // ★削除モードを覚えるスイッチを追加
+let isDeleteMode = false;
 
+// 総合計金額を再計算する関数
 function updateGrandTotal() {
     let grandTotal = 0;
     const rows = document.querySelectorAll('.item-row');
@@ -37,10 +39,35 @@ function updateGrandTotal() {
     totalPriceResult.textContent = grandTotal;
 }
 
+// ★追加：選択された（数量1以上の）商品だけをリアルタイムに集めてボタンの下に表示する関数
+function updateSelectedItemsList() {
+    selectedItemsList.innerHTML = ''; // 一旦中身を空っぽにする
+    let hasItems = false;
+
+    products.forEach(product => {
+        const count = itemCounts[product.name] || 0;
+        if (count > 0) {
+            hasItems = true;
+            // 1つの商品用の行（div）を作成
+            const itemLine = document.createElement('div');
+            itemLine.className = 'selected-item-line';
+            itemLine.innerHTML = `
+                <span>・${product.name} × ${count}個</span>
+                <span>${count * product.price}円</span>
+            `;
+            selectedItemsList.appendChild(itemLine);
+        }
+    });
+
+    // 1個も選ばれていない場合のテキスト
+    if (!hasItems) {
+        selectedItemsList.textContent = 'なし';
+    }
+}
+
 function renderTable() {
     tableBody.innerHTML = '';
     
-    // 表の上の「選択」ヘッダーの表示・非表示を切り替える
     const deleteHeader = document.querySelector('.delete-header');
     if (deleteHeader) {
         deleteHeader.style.display = isDeleteMode ? 'table-cell' : 'none';
@@ -55,13 +82,11 @@ function renderTable() {
         row.className = 'item-row';
         row.setAttribute('data-price', product.price);
 
-        // 値段変更モードの時は、単価の部分を入力欄（input）にする
         let priceColumnHtml = `<td>${product.price}円</td>`;
         if (isEditMode) {
             priceColumnHtml = `<td><input type="number" class="price-input" data-index="${index}" value="${product.price}">円</td>`;
         }
 
-        // ★削除モードの時は、一番左にチェックボックスの列を追加する
         let deleteColumnHtml = '';
         if (isDeleteMode) {
             deleteColumnHtml = `<td><input type="checkbox" class="delete-checkbox" data-index="${index}"></td>`;
@@ -93,6 +118,7 @@ function renderTable() {
             quantitySpan.textContent = itemCounts[product.name];
             subtotalSpan.textContent = itemCounts[product.name] * product.price;
             updateGrandTotal();
+            updateSelectedItemsList(); // ★個数が変わったらリストを更新
         });
 
         minusBtn.addEventListener('click', () => {
@@ -101,10 +127,12 @@ function renderTable() {
                 quantitySpan.textContent = itemCounts[product.name];
                 subtotalSpan.textContent = itemCounts[product.name] * product.price;
                 updateGrandTotal();
+                updateSelectedItemsList(); // ★個数が変わったらリストを更新
             }
         });
     });
     updateGrandTotal();
+    updateSelectedItemsList(); // ★初期表示の更新
 }
 
 function saveAndRefresh() {
@@ -112,15 +140,11 @@ function saveAndRefresh() {
     renderTable();
 }
 
-// ----------------------------------------------------
-// 各ボタンのイベント処理
-// ----------------------------------------------------
-
 // 1. 【値段を変更】ボタン
 const toggleEditBtn = document.getElementById('toggle-edit-btn');
 toggleEditBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    if (isDeleteMode) return; // 削除モード中は動かさない
+    if (isDeleteMode) return;
 
     if (!isEditMode) {
         isEditMode = true;
@@ -144,10 +168,10 @@ toggleEditBtn.addEventListener('click', (e) => {
     }
 });
 
-// 2. 【商品を追加】ボタン（プロンプト形式）
+// 2. 【商品を追加】ボタン
 const toggleAddBtn = document.getElementById('toggle-add-btn');
 toggleAddBtn.addEventListener('click', () => {
-    if (isEditMode || isDeleteMode) return; // 他のモード中は動かさない
+    if (isEditMode || isDeleteMode) return;
 
     const name = prompt('新しく追加する「商品名」を入力してください：');
     if (name === null) return;
@@ -177,41 +201,33 @@ toggleAddBtn.addEventListener('click', () => {
     alert(`「${trimmedName}（${price}円）」を追加しました！`);
 });
 
-// 3. ★【削除】ボタンを押したとき（チェックボックス方式）
+// 3. 【削除】ボタン
 const deleteModeBtn = document.getElementById('delete-mode-btn');
 deleteModeBtn.addEventListener('click', () => {
-    if (isEditMode) return; // 値段変更モード中は動かさない
+    if (isEditMode) return;
 
     if (!isDeleteMode) {
-        // ①削除モードに入る
         isDeleteMode = true;
         deleteModeBtn.textContent = '選択した商品を削除';
         deleteModeBtn.classList.add('active');
-        renderTable(); // チェックボックス付きで再描画
+        renderTable();
     } else {
-        // ②削除の実行処理
         const checkboxes = document.querySelectorAll('.delete-checkbox');
         const checkedIndices = [];
 
-        // チェックがついている商品の番号（index）をすべて集める
         checkboxes.forEach(cb => {
             if (cb.checked) {
                 checkedIndices.push(Number(cb.getAttribute('data-index')));
             }
         });
 
-        // チェックが1つ以上ついていた場合
         if (checkedIndices.length > 0) {
             if (confirm(`選択された ${checkedIndices.length} 個の商品を削除してもよろしいですか？`)) {
-                // 配列の後ろ（インデックスが大きい方）から順番に消していかないと、
-                // 前から消すと番号がズレて違う商品が消えてしまうのを防ぎます
                 checkedIndices.sort((a, b) => b - a);
                 
                 checkedIndices.forEach(index => {
                     const deletedProduct = products[index];
-                    // 注文個数の記憶からも削除
                     delete itemCounts[deletedProduct.name];
-                    // 商品リストから削除
                     products.splice(index, 1);
                 });
                 
@@ -219,11 +235,10 @@ deleteModeBtn.addEventListener('click', () => {
             }
         }
 
-        // 削除モードを終了して元に戻す
         isDeleteMode = false;
         deleteModeBtn.textContent = '削除';
         deleteModeBtn.classList.remove('active');
-        saveAndRefresh(); // 保存して再描画
+        saveAndRefresh();
     }
 });
 
@@ -233,6 +248,7 @@ document.getElementById('reset-btn').addEventListener('click', () => {
         itemCounts[key] = 0;
     }
     renderTable();
+    updateSelectedItemsList(); // ★リセット時もリストを更新
 });
 
 // 最初の起動
