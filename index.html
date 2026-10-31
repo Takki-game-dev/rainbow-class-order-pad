@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>みんなにっこり😊にじいろ屋<注文票></title>
+    <!-- ★ここから追加 -->
+    <!-- JSONファイルの読み込み -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- アプリとして認識させるためのJavaScript -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('PWA準備完了！'))
+                .catch((err) => console.log('PWAエラー:', err));
+        }
+    </script>
+    <!-- ★ここまで追加 -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
