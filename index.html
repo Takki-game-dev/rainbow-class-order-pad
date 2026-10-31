@@ -13,6 +13,7 @@
         <table>
             <thead>
                 <tr>
+                    <th class="delete-header" style="display: none; width: 40px;">選択</th>
                     <th>商品名</th>
                     <th>値段</th>
                     <th>個数</th>
@@ -22,9 +23,15 @@
             <tbody id="product-list-body"></tbody>
         </table>
 
-        <div class="reset-area">
-            <button id="reset-btn">リセット</button>
+        
+
+        <div class="control-penel">
+            <button id="reset-btn" class="btn reset-btn">リセット</button>
+            <button id="toggle-edit-btn" class="btn edit-btn">変更</button>
+            <button id="toggle-add-btn" class="btn add-btn">追加</button>
+            <button id="delete-mode-btn" class="btn delete-btn">削除</button>
         </div>
+
 
         <div class="total-area">
             <span>合計金額:</span>

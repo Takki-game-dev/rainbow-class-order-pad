@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background-color: #f1f2f6;
     margin: 0;
@@ -108,6 +108,162 @@ th {
 
 #total-price {
     font-size: 42px;
+    color: #ff4757;
+    margin-left: 10px;
+} */
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f1f2f6;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 550px;
+    padding-bottom: 110px !important; 
+}
+
+h1 {
+    text-align: center;
+    color: #2f3542;
+    margin-bottom: 25px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px 10px;
+    text-align: left;
+    border-bottom: 1px solid #ced6e0;
+}
+
+th {
+    background-color: #f1f2f6;
+    color: #57606f;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.quantity-control button {
+    background-color: #74b9ff;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 25%;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.quantity-control button:hover {
+    background-color: #0984e3;
+}
+
+.quantity {
+    font-size: 16px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+.subtotal {
+    font-weight: bold;
+}
+
+.control-panel {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.reset-btn { 
+    background-color: #747d8c; 
+    color: white; 
+    margin-top: 20px;
+}
+.reset-btn:hover { background-color: #57606f; }
+
+.edit-btn { background-color: #ffa502; color: white; }
+.edit-btn:hover { background-color: #ff7f50; }
+.edit-btn.active { background-color: #2ed573; }
+
+.add-btn { background-color: #2ed573; color: white; }
+.add-btn:hover { background-color: #26af5f; }
+
+.delete-btn { background-color: #ff4757; color: white; }
+.delete-btn:hover { background-color: #ff6b81; }
+
+.delete-btn.active { background-color: #ff1f35; animation: pulse 1.5s infinite; }
+
+.price-input {
+    width: 70px;
+    padding: 4px;
+    font-size: 16px;
+    border: 1px solid #ffa502;
+    border-radius: 4px;
+    text-align: right;
+}
+
+.delete-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.total-area {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 550px;
+    background: #ffffff;
+    box-sizing: border-box;
+    padding: 15px 30px;
+    margin: 0;
+    border-top: 3px solid #2f3542;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+    z-index: 1000;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#total-price {
+    font-size: 32px;
     color: #ff4757;
     margin-left: 10px;
 }
