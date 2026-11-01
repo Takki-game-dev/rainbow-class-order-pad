@@ -22,13 +22,16 @@ let products = JSON.parse(localStorage.getItem('rainbow_products')) || defaultPr
 
 const tableBody = document.getElementById('product-list-body');
 const totalPriceResult = document.getElementById('total-price');
-const selectedItemsList = document.getElementById('selected-items-list'); // ★取得を追加
+const selectedItemsList = document.getElementById('selected-items-list');
 
 const itemCounts = {};
 let isEditMode = false;
 let isDeleteMode = false;
+let isSortMode = false; 
 
-// 総合計金額を再計算する関数
+// ★新しく追加：最後に動かした商品の名前を記憶しておく変数
+let lastMovedProductName = ''; 
+
 function updateGrandTotal() {
     let grandTotal = 0;
     const rows = document.querySelectorAll('.item-row');
@@ -39,16 +42,14 @@ function updateGrandTotal() {
     totalPriceResult.textContent = grandTotal;
 }
 
-// ★追加：選択された（数量1以上の）商品だけをリアルタイムに集めてボタンの下に表示する関数
 function updateSelectedItemsList() {
-    selectedItemsList.innerHTML = ''; // 一旦中身を空っぽにする
+    selectedItemsList.innerHTML = '';
     let hasItems = false;
 
     products.forEach(product => {
         const count = itemCounts[product.name] || 0;
         if (count > 0) {
             hasItems = true;
-            // 1つの商品用の行（div）を作成
             const itemLine = document.createElement('div');
             itemLine.className = 'selected-item-line';
             itemLine.innerHTML = `
@@ -59,9 +60,8 @@ function updateSelectedItemsList() {
         }
     });
 
-    // 1個も選ばれていない場合のテキスト
     if (!hasItems) {
-        selectedItemsList.textContent = 'なし';
+        selectedItemsList.textContent = '選択された商品はありません';
     }
 }
 
@@ -73,13 +73,25 @@ function renderTable() {
         deleteHeader.style.display = isDeleteMode ? 'table-cell' : 'none';
     }
 
+    const sortHeader = document.querySelector('.sort-header');
+    if (sortHeader) {
+        sortHeader.style.display = isSortMode ? 'table-cell' : 'none';
+    }
+
     products.forEach((product, index) => {
         if (itemCounts[product.name] === undefined) {
             itemCounts[product.name] = 0;
         }
 
         const row = document.createElement('tr');
-        row.className = 'item-row';
+        
+        // ★調整：もしこの行が「最後に動かした商品」なら、水色にするクラス（active-sort-row）をくっつける
+        if (isSortMode && product.name === lastMovedProductName) {
+            row.className = 'item-row active-sort-row';
+        } else {
+            row.className = 'item-row';
+        }
+        
         row.setAttribute('data-price', product.price);
 
         let priceColumnHtml = `<td>${product.price}円</td>`;
@@ -92,8 +104,21 @@ function renderTable() {
             deleteColumnHtml = `<td><input type="checkbox" class="delete-checkbox" data-index="${index}"></td>`;
         }
 
+        let sortColumnHtml = '';
+        if (isSortMode) {
+            sortColumnHtml = `
+                <td>
+                    <div class="arrow-control">
+                        <button type="button" class="arrow-btn up-btn" data-index="${index}">⇧</button>
+                        <button type="button" class="arrow-btn down-btn" data-index="${index}">⇩</button>
+                    </div>
+                </td>
+            `;
+        }
+
         row.innerHTML = `
             ${deleteColumnHtml}
+            ${sortColumnHtml}
             <td>${product.name}</td>
             ${priceColumnHtml}
             <td>
@@ -118,7 +143,7 @@ function renderTable() {
             quantitySpan.textContent = itemCounts[product.name];
             subtotalSpan.textContent = itemCounts[product.name] * product.price;
             updateGrandTotal();
-            updateSelectedItemsList(); // ★個数が変わったらリストを更新
+            updateSelectedItemsList();
         });
 
         minusBtn.addEventListener('click', () => {
@@ -127,12 +152,49 @@ function renderTable() {
                 quantitySpan.textContent = itemCounts[product.name];
                 subtotalSpan.textContent = itemCounts[product.name] * product.price;
                 updateGrandTotal();
-                updateSelectedItemsList(); // ★個数が変わったらリストを更新
+                updateSelectedItemsList();
             }
         });
     });
+
+    if (isSortMode) {
+        // 🔼（上へ）ボタンの処理
+        const upButtons = document.querySelectorAll('.up-btn');
+        upButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const index = Number(btn.getAttribute('data-index'));
+                if (index > 0) { 
+                    // ★追加：動かした商品の名前を記憶する
+                    lastMovedProductName = products[index].name;
+
+                    const temp = products[index];
+                    products[index] = products[index - 1];
+                    products[index - 1] = temp;
+                    saveAndRefresh();
+                }
+            });
+        });
+
+        // 🔽（下へ）ボタンの処理
+        const downButtons = document.querySelectorAll('.down-btn');
+        downButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const index = Number(btn.getAttribute('data-index'));
+                if (index < products.length - 1) { 
+                    // ★追加：動かした商品の名前を記憶する
+                    lastMovedProductName = products[index].name;
+
+                    const temp = products[index];
+                    products[index] = products[index + 1];
+                    products[index + 1] = temp;
+                    saveAndRefresh();
+                }
+            });
+        });
+    }
+
     updateGrandTotal();
-    updateSelectedItemsList(); // ★初期表示の更新
+    updateSelectedItemsList();
 }
 
 function saveAndRefresh() {
@@ -144,7 +206,7 @@ function saveAndRefresh() {
 const toggleEditBtn = document.getElementById('toggle-edit-btn');
 toggleEditBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    if (isDeleteMode) return;
+    if (isDeleteMode || isSortMode) return; 
 
     if (!isEditMode) {
         isEditMode = true;
@@ -171,7 +233,7 @@ toggleEditBtn.addEventListener('click', (e) => {
 // 2. 【商品を追加】ボタン
 const toggleAddBtn = document.getElementById('toggle-add-btn');
 toggleAddBtn.addEventListener('click', () => {
-    if (isEditMode || isDeleteMode) return;
+    if (isEditMode || isDeleteMode || isSortMode) return;
 
     const name = prompt('新しく追加する「商品名」を入力してください：');
     if (name === null) return;
@@ -204,7 +266,7 @@ toggleAddBtn.addEventListener('click', () => {
 // 3. 【削除】ボタン
 const deleteModeBtn = document.getElementById('delete-mode-btn');
 deleteModeBtn.addEventListener('click', () => {
-    if (isEditMode) return;
+    if (isEditMode || isSortMode) return;
 
     if (!isDeleteMode) {
         isDeleteMode = true;
@@ -242,13 +304,33 @@ deleteModeBtn.addEventListener('click', () => {
     }
 });
 
-// 4. 【注文をリセット】ボタン
+// 4. 【並び替え】ボタン
+const sortModeBtn = document.getElementById('sort-mode-btn');
+sortModeBtn.addEventListener('click', () => {
+    if (isEditMode || isDeleteMode) return; 
+
+    if (!isSortMode) {
+        isSortMode = true;
+        sortModeBtn.textContent = '並び替えを終了';
+        sortModeBtn.classList.add('active');
+        renderTable();
+    } else {
+        // ★調整：並び替えモードを終了するときは、水色の記憶も綺麗に消す
+        isSortMode = false;
+        lastMovedProductName = '';
+        sortModeBtn.textContent = '並び替え';
+        sortModeBtn.classList.remove('active');
+        renderTable();
+    }
+});
+
+// 5. 【注文をリセット】ボタン
 document.getElementById('reset-btn').addEventListener('click', () => {
     for (let key in itemCounts) {
         itemCounts[key] = 0;
     }
     renderTable();
-    updateSelectedItemsList(); // ★リセット時もリストを更新
+    updateSelectedItemsList();
 });
 
 // 最初の起動

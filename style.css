@@ -1,117 +1,3 @@
-/* body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f1f2f6;
-    margin: 0;
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    width: 100%;
-    max-width: 550px;
-}
-
-h1 {
-    text-align: center;
-    color: #2f3542;
-    margin-bottom: 25px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-th, td {
-    padding: 10px 10px;
-    text-align: left;
-    border-bottom: 1px solid #ced6e0;
-}
-
-th {
-    background-color: #f1f2f6;
-    color: #57606f;
-}
-
-.quantity-control {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.quantity-control button {
-    background-color: #74b9ff;
-    color: white;
-    border: none;
-    width: 35px;
-    height: 35px;
-    border-radius: 25%;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.quantity-control button:hover {
-    background-color: #0984e3;
-}
-
-.quantity {
-    font-size: 16px;
-    font-weight: bold;
-    min-width: 20px;
-    text-align: center;
-}
-
-.subtotal {
-    font-weight: bold;
-}
-
-.total-area {
-    text-align: right;
-    font-size: 30px;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.reset-area {
-    text-align: right;
-    font-size: 20px;
-    font-weight: bold;
-    border-top: 2px solid #2f3542;
-    padding-top: 15px;
-    margin-top: 10px;
-}
-
-#reset-btn {
-    background-color: #1eb600;
-    color: white;
-    border: none;
-    width: 120px;
-    height: 50px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.reset-btn:hover {
-    background-color: #199600;
-}
-
-#total-price {
-    font-size: 42px;
-    color: #ff4757;
-    margin-left: 10px;
-} */
-
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background-color: #f1f2f6;
@@ -224,6 +110,10 @@ th {
 
 .delete-btn.active { background-color: #ff1f35; animation: pulse 1.5s infinite; }
 
+.sort-btn { background-color: #a55eea; color: white; }
+.sort-btn:hover { background-color: #8854d0; }
+.sort-btn.active { background-color: #2ed573; }
+
 .price-input {
     width: 70px;
     padding: 4px;
@@ -239,7 +129,24 @@ th {
     cursor: pointer;
 }
 
-/* ★追加：選択中の商品エリアの見た目 */
+.arrow-control {
+    display: flex;
+    gap: 5px;
+}
+.arrow-btn {
+    background-color: #0984e3;
+    border: 1px solid #ced6e0;
+    color: white;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.arrow-btn:hover {
+    background-color: #025797;
+}
+
 .selected-items-container {
     margin-top: 30px;
     padding: 15px;
@@ -288,4 +195,9 @@ th {
     font-size: 32px;
     color: #ff4757;
     margin-left: 10px;
+}
+
+.item-row.active-sort-row {
+    background-color: #e3f2fd !important; /* 爽やかなパステル水色 */
+    transition: background-color 0.3s ease; /* 色が滑らかに変わるアニメーション */
 }
